@@ -12,9 +12,9 @@ namespace tamagochi
     internal class TamaArgs    //возврат параметров message box
     {
         private string title, text;
-        private int icon;
+        private static int icon;
         private static TamaArgs prevArgs = null;
-        private List<string>args = new List<string>()
+        private static List<string>args = new List<string>()
         {
             "Хочу есть","хочу спать","Я заболел",
             "Поиграй со мной","Погуляй со мной"
@@ -34,10 +34,10 @@ namespace tamagochi
             int i = random.Next(0,4);
             switch (i)
             {
-                case 0: tamaArgs = new TamaArgs(
-                default:
-                    break;
+                case 0: icon = 
+                
             }
+            new TamaArgs("Тамагочи", args[i])
         }
         
     }
