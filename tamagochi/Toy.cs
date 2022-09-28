@@ -67,15 +67,15 @@ namespace tamagochi
                 refusal ++;
                 if(refusal >=3) isSick = true;
                 Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
+               
                 if (isSick)
                 {
-
+                    timer.Enabled = false;
                     Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
                     DialogResult result1 = MessageBox.Show("Вылечи меня", "Тамогочи заболел", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     if (result1 == DialogResult.OK) timer.Enabled = true;
                     else
                     {
-                        timer.Enabled = false;
                         timer.Stop();
                         timer.Dispose();
                         isAlife = false;
