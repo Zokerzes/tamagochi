@@ -10,14 +10,16 @@ using Timer = System.Timers.Timer;
 
 namespace tamagochi
 {
-    
+
     internal class Program
     {
-        static void Main(string []Args)
+        static void Main(string[] Args)
         {
-            
+
             Toy toy = new Toy();        //старт программы
-            
+
+
         }
     }
 }
+

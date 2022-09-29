@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using System.Diagnostics;
-using Timer = System.Timers.Timer;
 using static System.Console;
+using Timer = System.Timers.Timer;
 
 namespace tamagochi
 {
@@ -68,25 +63,27 @@ namespace tamagochi
         //событие: хотелка
         public void OnToyEvent(Object source, ElapsedEventArgs e)
         {
-            timer.Enabled = false;
-            ToyArgs toyArgs = getWishList();
-            while (toyArgs.Equals(prevToyArgs)) toyArgs = getWishList();
-            prevToyArgs = toyArgs;
-            printToy.itsOk();
-            Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
+            timer.Enabled = false;                          //таймер хотелки стоп
+            ToyArgs toyArgs = getWishList();                //что тамогочи хочет
+            while (toyArgs.Equals(prevToyArgs)) toyArgs = getWishList();    //защита от повтора хотелки
+            prevToyArgs = toyArgs;                                          //запоминаем хотелку чтобы не повторяться
+            printToy.itsOk();                                               //вывод картинки
+            Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");   //вывод статусов
+
+            // отрисовка и обработка окна диалога
             DialogResult result = MessageBox.Show(toyArgs.text, toyArgs.title, MessageBoxButtons.OKCancel, toyArgs.icon);
-            if (result == DialogResult.OK) { 
-                timer.Enabled = true;
-                printToy.itsOk();
-                Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
+            if (result == DialogResult.OK) {    //если ок
+                timer.Enabled = true;           //таймер  продолжить
+                printToy.itsOk();               //вывод картинки
+                Console.WriteLine($"isSick = {isSick}, refusal = {refusal}"); //вывод статусов
             }
             else
             {
                 printToy.itsNotOk();
                 Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
                 timer.Enabled = true;
-                refusal++;
-                if (refusal >= 3) isSick = true;
+                refusal++;                              //если тамогочи отказали прибавить счетчик отказов 
+                if (refusal >= 3) isSick = true;        //при 3х отказов - заболевает
 
 
                 if (isSick)
@@ -97,13 +94,13 @@ namespace tamagochi
                     DialogResult result1 = MessageBox.Show("Вылечи меня", "Тамогочи заболел", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     if (result1 == DialogResult.OK)
                     {
-                        refusal = 0;
+                        refusal = 0;            //вылечили - всё снова хорошо
                         isSick = false;
                         timer.Enabled = true;
                     }
                     else
                     {
-                        printToy.itsRIP();
+                        printToy.itsRIP();          //невылечили - тама умер от болезни
                         Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
                         MessageBox.Show("RIP: из-за болезни.", "Тамогочи фсёёёоооо", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         timer.Stop();
@@ -121,7 +118,7 @@ namespace tamagochi
                 
                 
             };
-            if (!isSick && !isAlife)
+            if (!isSick && !isAlife) //если тама не болной но просто состарился - умер от старости
             {
                 printToy.itsRIP();
                 Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
@@ -133,25 +130,23 @@ namespace tamagochi
             
             isAlife = true;
             prevToyArgs = null;
-            initGlobalTimer();
-            initTimer();
-            life();
-            getWishList();
+            initGlobalTimer();  //старт таймера жизни
+            initTimer();        //старт хотелок
+            life();                 
+            
         }
        
 
-        private ToyArgs getWishList()
+        private ToyArgs getWishList() // сборка текущей хотелки
         {
             ToyArgs toyArgs = null;
             Random random = new Random();
             int temp = random.Next(0, 4);
-            SortedDictionary<string, MessageBoxIcon>.KeyCollection keys = wishList.Keys;
-            List<string> keyList = keys.ToList();
-            //keyList.ForEach(k => Console.WriteLine(k));
-
+            SortedDictionary<string, MessageBoxIcon>.KeyCollection keys = wishList.Keys; //достаём ключи из словаря
+            List<string> keyList = keys.ToList(); //формируем список ключей
             MessageBoxIcon icon;
-            wishList.TryGetValue(keyList[temp], out icon);
-            toyArgs = new ToyArgs("Тамагочи", keyList[temp], icon);
+            wishList.TryGetValue(keyList[temp], out icon);          //по ключу достаем значение (?) иконки
+            toyArgs = new ToyArgs("Тамагочи", keyList[temp], icon); //формируем аргументаы хотелки
 
             return toyArgs;
         }
@@ -171,7 +166,7 @@ namespace tamagochi
             {
                 if (obj is ToyArgs)
                 {
-                    return this.text.Equals((obj as ToyArgs).text);
+                    return this.text.Equals((obj as ToyArgs).text); 
                 }
                 return false;
             }
