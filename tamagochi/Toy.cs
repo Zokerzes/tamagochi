@@ -16,8 +16,8 @@ namespace tamagochi
         ToyArgs prevToyArgs;        //предыдущее сообщение чтобы не повторялось  
         Timer timer;                //таймер хотелок
         Timer globalTimer;          //таймер жизни
-        int timeOfLife = 30000;     //мксекунды
-        int wishlistPeriod = 1000;   //мксекунды
+        int timeOfLife = 10000;     //мксекунды
+        int wishlistPeriod = 500;   //мксекунды
         PrintToy printToy = new PrintToy();
 
         //создаём коллекцию хотелок
@@ -101,6 +101,7 @@ namespace tamagochi
                     }
                     else
                     {
+                        globalTimer.Enabled = false;
                         printToy.itsRIP();          //невылечили - тама умер от болезни
                         Console.WriteLine($"isSick = {isSick}, refusal = {refusal}");
                         MessageBox.Show("RIP: из-за болезни.", "Тамогочи фсёёёоооо", MessageBoxButtons.OK, MessageBoxIcon.Error);
